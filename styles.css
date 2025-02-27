@@ -125,51 +125,56 @@ footer {
     z-index: -1;
 }
 
-.balloons::before,
-.balloons::after {
-    content: '';
+.balloon {
     position: absolute;
-    width: 20px;
-    height: 30px;
-    background: radial-gradient(circle, #FFD700 40%, transparent 60%);
-    border-radius: 50%;
+    width: 40px;
+    height: 50px;
+    border-radius: 50% 50% 40% 40%;
     animation: rise 6s infinite ease-in;
+    opacity: 0.7;
 }
 
-.balloons::before {
+.balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 10px;
+    background: #8B4513; /* Mandje in bruin */
+    border-radius: 2px;
+}
+
+/* Verschillende kleuren en posities */
+.balloon1 {
     left: 20%;
-    bottom: -50px;
+    background: #FF6347; /* Rood */
     animation-delay: 0s;
 }
 
-.balloons::after {
+.balloon2 {
+    left: 40%;
+    background: #FFD700; /* Goud */
+    animation-delay: 1.5s;
+}
+
+.balloon3 {
     left: 70%;
-    bottom: -50px;
+    background: #4682B4; /* Blauw */
     animation-delay: 3s;
 }
 
+.balloon4 {
+    left: 90%;
+    background: #32CD32; /* Groen */
+    animation-delay: 4.5s;
+}
+
 @keyframes rise {
-    0% { transform: translateY(0); opacity: 0.8; }
+    0% { transform: translateY(100vh); opacity: 0.7; }
     100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
 }
-
-/* Extra ballonnen voor meer effect */
-.balloons {
-    overflow: hidden;
-}
-
-.balloons span {
-    position: absolute;
-    width: 15px;
-    height: 25px;
-    background: radial-gradient(circle, #FFD700 40%, transparent 60%);
-    border-radius: 50%;
-    animation: rise 5s infinite ease-in;
-}
-
-.balloons span:nth-child(2) { left: 40%; animation-delay: 1s; }
-.balloons span:nth-child(3) { left: 90%; animation-delay: 2s; }
-.balloons span:nth-child(4) { left: 10%; animation-delay: 4s; }
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -177,4 +182,6 @@ footer {
     header p { font-size: 1.2rem; }
     .product-card { width: 100%; max-width: 350px; }
     .footer-content { flex-direction: column; text-align: center; }
+    .balloon { width: 30px; height: 40px; }
+    .balloon::after { width: 15px; height: 8px; bottom: -8px; }
 }
