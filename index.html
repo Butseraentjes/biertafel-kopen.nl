@@ -3,60 +3,843 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BierTafel Kopen - Stijlvolle Biertafels</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Biertafel-kopen.nl - Premium KING® Biertafels & Bierbanken</title>
+    <meta name="description" content="Biertafels kopen? Ontdek onze premium KING® biertafels en biertafelsets. ✓ FSC-gecertificeerd ✓ Gratis verzending vanaf €150 ✓ 5 jaar garantie">
+    
+    <!-- EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: #2c5530;
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #2c5530 0%, #4a7c59 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .benefit {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+        
+        .products-section {
+            padding: 3rem 0;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #2c5530;
+        }
+        
+        .product-description {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            color: #2c5530;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .btn {
+            background-color: #4a7c59;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            background-color: #2c5530;
+        }
+        
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        
+        .cart-content {
+            background: white;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 2rem;
+            border-radius: 10px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .quantity-btn {
+            background: #4a7c59;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .info-section {
+            background: #f8f9fa;
+            padding: 3rem 0;
+            margin-top: 3rem;
+        }
+        
+        .info-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        footer {
+            background: #2c5530;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .close-btn {
+            float: right;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .close-btn:hover {
+            color: #333;
+        }
+        
+        .shipping-option {
+            margin: 10px 0;
+        }
+        
+        .order-success {
+            display: none;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+        
+        .payment-info {
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>BierTafel Kopen</h1>
-        <p>De beste biertafels voor elk feest!</p>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">🌳 Biertafel-kopen.nl</div>
+                <div class="cart-icon" onclick="openCart()">
+                    🛒 <span class="cart-count">0</span>
+                </div>
+            </div>
+        </div>
     </header>
 
-    <section class="products">
-        <a href="https://www.e-woodproducts.com/collections/biertafels" target="_blank" class="product-card">
-            <img src="https://www.e-woodproducts.com/cdn/shop/files/biertafel220-70-2_793x793.jpg?v=1707379116" alt="Biertafel 220 x 70">
-            <h2>Biertafel 220 x 70</h2>
-            <p>Robuust en stijlvol, perfect voor grote groepen.</p>
-        </a>
-        <a href="https://www.e-woodproducts.com/collections/biertafels" target="_blank" class="product-card">
-            <img src="https://www.e-woodproducts.com/cdn/shop/files/biertafelset220-80_1390x1390.png?v=1727339144" alt="Biertafelset 220 x 80 cm">
-            <h2>Biertafelset 220 x 80 cm</h2>
-            <p>Complete set voor een geslaagd feest.</p>
-        </a>
-        <a href="https://www.e-woodproducts.com/collections/biertafels" target="_blank" class="product-card">
-            <img src="https://www.e-woodproducts.com/cdn/shop/files/bierset110-4_1200x1200.jpg?v=1713196125" alt="Bierset 110 cm">
-            <h2>Bierset 110 cm</h2>
-            <p>Compact en gezellig, ideaal voor kleinere ruimtes.</p>
-        </a>
+    <section class="hero">
+        <div class="container">
+            <h1>Premium KING® Biertafels & Biertafelsets</h1>
+            <p>Dé specialist in hoogwaardige biertafels voor elke gelegenheid</p>
+            <div class="benefits">
+                <div class="benefit">✓ FSC-gecertificeerd hout</div>
+                <div class="benefit">✓ 5 jaar garantie</div>
+                <div class="benefit">✓ Gratis verzending vanaf €150</div>
+                <div class="benefit">✓ Eigen bezorgdienst</div>
+            </div>
+        </div>
     </section>
 
+    <section class="products-section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem;">Onze Biertafels & Sets</h2>
+            <div class="products-grid" id="products"></div>
+        </div>
+    </section>
+
+    <section class="info-section">
+        <div class="container">
+            <div class="info-content">
+                <h2>Waarom kiezen voor KING® Biertafels?</h2>
+                <p>Onze KING® biertafels zijn dé perfecte keuze voor elk tuinfeest, festival of evenement. Vervaardigd uit FSC-gecertificeerd vurenhout en dubbel gelakt voor optimale bescherming tegen weer en wind. Met hun stevige constructie en tijdloze uitstraling zijn ze ideaal voor zowel particulier als professioneel gebruik.</p>
+                
+                <h3>Kenmerken van onze biertafels:</h3>
+                <ul>
+                    <li><strong>Duurzaam FSC-hout:</strong> Al ons hout komt uit verantwoord beheerde bossen</li>
+                    <li><strong>Dubbel gelakt:</strong> Bestand tegen drank- en voedingsvlekken</li>
+                    <li><strong>Stevige constructie:</strong> Donkergroen hoekstaal (28 x 28 x 3 mm)</li>
+                    <li><strong>Veilig design:</strong> Afgeronde hoeken voor extra veiligheid</li>
+                    <li><strong>Opklapbaar:</strong> Eenvoudig op te bergen en te transporteren</li>
+                    <li><strong>5 jaar garantie:</strong> Wij staan achter onze kwaliteit</li>
+                </ul>
+                
+                <h3>Perfect voor:</h3>
+                <ul>
+                    <li>Tuinfeesten en BBQ's</li>
+                    <li>Festivals en evenementen</li>
+                    <li>Horeca en catering</li>
+                    <li>Bedrijfsfeesten</li>
+                    <li>Scholen en verenigingen</li>
+                    <li>Kamperen en recreatie</li>
+                </ul>
+                
+                <h3>Levering en service:</h3>
+                <p>Wij verzorgen zelf de levering van uw biertafels en garanderen dat alles in perfecte staat bij u aankomt. Desgewenst monteren wij de tafels ook ter plaatse. U kunt uw bestelling ook ophalen in ons magazijn in Lebbeke (enkel op afspraak).</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <span class="close-btn" onclick="closeCart()">&times;</span>
+            <h2>Winkelwagen</h2>
+            
+            <div class="order-success" id="orderSuccess">
+                ✓ Uw bestelling is succesvol verzonden! Controleer uw e-mail voor de bevestiging.
+            </div>
+            
+            <div id="cartItems"></div>
+            
+            <div id="cartTotal" style="text-align: right; margin: 20px 0; font-size: 1.2rem;">
+                <strong>Subtotaal: €0,00</strong>
+            </div>
+            
+            <div id="checkoutForm" style="display: none;">
+                <h3>Aflevergegevens</h3>
+                <form id="orderForm">
+                    <div class="form-group">
+                        <label>Naam *</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>E-mail *</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Telefoon *</label>
+                        <input type="tel" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Verzendmethode *</label>
+                        <div class="shipping-option">
+                            <input type="radio" name="shipping" value="delivery" id="delivery" checked onchange="updateShipping()">
+                            <label for="delivery">Bezorging aan huis (+ €19,95)</label>
+                        </div>
+                        <div class="shipping-option">
+                            <input type="radio" name="shipping" value="pickup" id="pickup" onchange="updateShipping()">
+                            <label for="pickup">Ophalen in Lebbeke (gratis)</label>
+                        </div>
+                    </div>
+                    
+                    <div id="deliveryAddress">
+                        <div class="form-group">
+                            <label>Straat + huisnummer *</label>
+                            <input type="text" name="address" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Postcode *</label>
+                            <input type="text" name="postcode" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Plaats *</label>
+                            <input type="text" name="city" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" name="differentBilling" onchange="toggleBilling()">
+                            Ander factuuradres
+                        </label>
+                    </div>
+                    
+                    <div id="billingAddress" style="display: none;">
+                        <h4>Factuuradres</h4>
+                        <div class="form-group">
+                            <label>Bedrijfsnaam</label>
+                            <input type="text" name="billingCompany">
+                        </div>
+                        <div class="form-group">
+                            <label>Straat + huisnummer</label>
+                            <input type="text" name="billingAddress">
+                        </div>
+                        <div class="form-group">
+                            <label>Postcode</label>
+                            <input type="text" name="billingPostcode">
+                        </div>
+                        <div class="form-group">
+                            <label>Plaats</label>
+                            <input type="text" name="billingCity">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Opmerkingen</label>
+                        <textarea name="comments" rows="3"></textarea>
+                    </div>
+                    
+                    <div style="text-align: right; margin: 20px 0; font-size: 1.2rem;">
+                        <strong>Totaal: €<span id="finalTotal">0,00</span></strong>
+                    </div>
+                    
+                    <div class="payment-info">
+                        <h3>💳 Betaling via overschrijving</h3>
+                        <p>Na het plaatsen van uw bestelling ontvangt u een e-mail met alle betaalgegevens:</p>
+                        <ul>
+                            <li>IBAN nummer</li>
+                            <li>BIC code</li>
+                            <li>Te betalen bedrag</li>
+                            <li>Unieke referentie</li>
+                        </ul>
+                        <p><strong>Uw bestelling wordt verzonden zodra de betaling is ontvangen.</strong></p>
+                    </div>
+                    
+                    <button type="submit" class="btn" style="margin-top: 20px;">Bestelling plaatsen</button>
+                </form>
+            </div>
+            
+            <div id="emptyCart" style="text-align: center; padding: 3rem 0;">
+                <p>Uw winkelwagen is leeg</p>
+                <button class="btn" onclick="closeCart()" style="margin-top: 1rem; width: auto;">Verder winkelen</button>
+            </div>
+            
+            <div id="cartButtons" style="margin-top: 20px;">
+                <button class="btn" onclick="proceedToCheckout()">Afrekenen</button>
+            </div>
+        </div>
+    </div>
+
     <footer>
-        <div class="footer-content">
-            <div class="company-info">
-                <h3>BV E-Products Europe</h3>
-                <p>Patijntjestraat 107, 9000 Gent</p>
-                <p>BTW: BE 0500.621.156</p>
-                <p>E-mail: <a href="mailto:support@e-woodproducts.com">support@e-woodproducts.com</a></p>
-            </div>
-            <div class="bank-info">
-                <h3>Bankgegevens</h3>
-                <p>BIC: GEBA BE BB</p>
-                <p>IBAN: BE 61 0016 8384 4117</p>
-            </div>
-            <div class="links">
-                <h3>Ontdek Meer</h3>
-                <p><a href="https://www.e-woodproducts.com/" target="_blank">E-Woodproducts</a></p>
-                <p><a href="https://www.e-woodproducts.com/collections/biertafels" target="_blank">Biertafels Collectie</a></p>
-            </div>
+        <div class="container">
+            <p><strong>Biertafel-kopen.nl</strong></p>
+            <p>Een initiatief van BV E-Products Europe</p>
+            <p>Hannaerden 1A, 9280 Lebbeke | Tel: 0489 42 09 31</p>
+            <p>BTW: BE 0500.621.156</p>
         </div>
     </footer>
 
-    <!-- Ballonnen container -->
-    <div class="balloons">
-        <span class="balloon balloon1"></span>
-        <span class="balloon balloon2"></span>
-        <span class="balloon balloon3"></span>
-        <span class="balloon balloon4"></span>
-    </div>
+    <script>
+        // Initialize EmailJS
+        (function() {
+            emailjs.init("YOUR_PUBLIC_KEY"); // Vervang met je EmailJS public key
+        })();
+        
+        // Products data
+        const products = [
+            {
+                id: 1,
+                name: "KING® Biertafel 220 x 80 cm",
+                description: "Royale biertafel, perfect als buffet- en eettafel. Dubbel gelakt hout (2,8 cm dik), weerbestendig en veilig met afgeronde hoeken.",
+                price: 149.95,
+                image: "https://www.e-woodproducts.be/cdn/shop/files/biertafel220-80-4_472x472.jpg?v=1713359606"
+            },
+            {
+                id: 2,
+                name: "KING® Biertafel 220 x 70 cm",
+                description: "Klassieke biertafel voor elk tuinfeest. FSC-gecertificeerd vurenhout, dubbel gelakt en opklapbaar voor gemakkelijke opslag.",
+                price: 129.95,
+                image: "https://www.e-woodproducts.be/cdn/shop/files/biertafel220-70-1_472x472.jpg?v=1707379116"
+            },
+            {
+                id: 3,
+                name: "KING® Biertafel 220 x 60 cm",
+                description: "Lange plooitafel, veelzijdig inzetbaar voor evenementen. Compact maar ruim, ideaal voor beperkte ruimtes.",
+                price: 119.95,
+                image: "https://www.e-woodproducts.be/cdn/shop/files/biertafel-200x60-1000-2-wxh-_1_ed35dd37-0a65-4974-99b7-5ffcba9e4043_472x354.jpg?v=1741167917"
+            },
+            {
+                id: 4,
+                name: "KING® Biertafel 160 x 70 cm",
+                description: "Handige opklapbare biertafel, perfect voor kleinere tuinfeesten. Stevige constructie met donkergroen onderstel.",
+                price: 109.95,
+                image: "https://www.e-woodproducts.be/cdn/shop/files/biertafel-160-2_472x472.jpg?v=1713360481"
+            },
+            {
+                id: 5,
+                name: "KING® Biertafel 110 cm",
+                description: "Compacte opklapbare tafel, budgetvriendelijk en ideaal voor kleine groepen. Perfect voor balkons en kleine tuinen.",
+                price: 94.95,
+                image: "https://www.e-woodproducts.be/cdn/shop/files/biertafe-110-1000-2-wxh-_2_f8d4641a-f08f-4bce-b35e-eae3bb97a9a5_472x354.jpg?v=1706789387"
+            },
+            {
+                id: 6,
+                name: "KING® Biertafelset 220 x 80 cm",
+                description: "Complete set met 1 biertafel (220x80cm) en 2 bierbanken. Het gelakte hout (2,8 cm dik) maakt de set weerbestendig en duurzaam.",
+                price: 269.95,
+                image: "https://www.e-woodproducts.be/cdn/shop/files/biertafelset220-80_472x472.png?v=1742548211"
+            },
+            {
+                id: 7,
+                name: "KING® Biertafelset 220 x 70 cm",
+                description: "Complete set met 1 biertafel (220x70cm) en 2 bierbanken. Perfect voor tuinfeesten, festivals en grote evenementen.",
+                price: 239.95,
+                image: "https://www.e-woodproducts.be/cdn/shop/files/biertafelset220-70_472x472.png?v=1744353033"
+            },
+            {
+                id: 8,
+                name: "KING® Biertafelset 220 x 60 cm",
+                description: "Complete set met 1 biertafel (220x60cm) en 2 bierbanken. Ideaal voor langwerpige ruimtes en grote groepen.",
+                price: 229.95,
+                image: "https://www.e-woodproducts.be/cdn/shop/files/biertafelset-220x60-1000-2-wxh-_2_46606a6c-3a9f-409c-b658-3fcdd9d1dceb_472x354.jpg?v=1741168026"
+            },
+            {
+                id: 9,
+                name: "KING® Biertafelset 160 x 70 cm",
+                description: "Handige complete set met 1 biertafel (160x70cm) en 2 bierbanken. Perfect voor middelgrote gezelschappen.",
+                price: 199.95,
+                image: "https://www.e-woodproducts.be/cdn/shop/files/biertafelset-160-70-1_472x472.jpg?v=1713360144"
+            },
+            {
+                id: 10,
+                name: "KING® Biertafelset 110 cm",
+                description: "Gezellige set met 1 biertafel (110cm) en 2 zitbanken. Ideaal voor familiefeesten of kleine evenementen.",
+                price: 159.95,
+                image: "https://www.e-woodproducts.be/cdn/shop/files/bierset110-3_472x472.jpg?v=1713196125"
+            },
+            {
+                id: 11,
+                name: "Transportkar voor Biertafels",
+                description: "Efficiënte transportoplossing voor biertafels. Uitschuifbaar ontwerp, geschikt voor 10 complete sets. Met 4 wielen waarvan 2 met rem.",
+                price: 349.95,
+                image: "https://www.e-woodproducts.be/cdn/shop/files/transport-1000-2-wxh_475x316.jpg?v=1706789230"
+            }
+        ];
+        
+        // Shopping cart
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        // Display products
+        function displayProducts() {
+            const productsContainer = document.getElementById('products');
+            productsContainer.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgZmlsbD0iI2RkZCIvPjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjE1MCIgeT0iMTI1IiBzdHlsZT0iZmlsbDojOTk5O2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjE3cHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+Tm8gSW1hZ2U8L3RleHQ+PC9zdmc+'">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <p class="product-price">€${product.price.toFixed(2).replace('.', ',')}</p>
+                        <button class="btn" onclick="addToCart(${product.id})">In winkelwagen</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Add to cart
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({...product, quantity: 1});
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            
+            // Visual feedback
+            alert(`${product.name} is toegevoegd aan uw winkelwagen!`);
+        }
+        
+        // Update cart count
+        function updateCartCount() {
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.querySelector('.cart-count').textContent = count;
+        }
+        
+        // Open cart
+        function openCart() {
+            document.getElementById('cartModal').style.display = 'block';
+            displayCartItems();
+            document.getElementById('checkoutForm').style.display = 'none';
+            document.getElementById('cartButtons').style.display = cart.length > 0 ? 'block' : 'none';
+        }
+        
+        // Close cart
+        function closeCart() {
+            document.getElementById('cartModal').style.display = 'none';
+        }
+        
+        // Display cart items
+        function displayCartItems() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const emptyCart = document.getElementById('emptyCart');
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '';
+                emptyCart.style.display = 'block';
+                document.getElementById('cartButtons').style.display = 'none';
+            } else {
+                emptyCart.style.display = 'none';
+                cartItemsContainer.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div style="flex: 1; margin: 0 20px;">
+                            <h4>${item.name}</h4>
+                            <p>€${item.price.toFixed(2).replace('.', ',')}</p>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                        </div>
+                        <div style="margin-left: 20px;">
+                            <strong>€${(item.price * item.quantity).toFixed(2).replace('.', ',')}</strong>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" style="margin-left: 20px; background: none; border: none; color: red; cursor: pointer;">🗑️</button>
+                    </div>
+                `).join('');
+            }
+            
+            updateCartTotal();
+        }
+        
+        // Update quantity
+        function updateQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    displayCartItems();
+                    updateCartCount();
+                }
+            }
+        }
+        
+        // Remove from cart
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCartItems();
+            updateCartCount();
+        }
+        
+        // Update cart total
+        function updateCartTotal() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('cartTotal').innerHTML = `<strong>Subtotaal: €${subtotal.toFixed(2).replace('.', ',')}</strong>`;
+            updateFinalTotal();
+        }
+        
+        // Proceed to checkout
+        function proceedToCheckout() {
+            document.getElementById('checkoutForm').style.display = 'block';
+            document.getElementById('cartButtons').style.display = 'none';
+            updateFinalTotal();
+        }
+        
+        // Toggle billing address
+        function toggleBilling() {
+            const billingAddress = document.getElementById('billingAddress');
+            const checked = document.querySelector('[name="differentBilling"]').checked;
+            billingAddress.style.display = checked ? 'block' : 'none';
+        }
+        
+        // Update shipping
+        function updateShipping() {
+            const isDelivery = document.getElementById('delivery').checked;
+            document.getElementById('deliveryAddress').style.display = isDelivery ? 'block' : 'none';
+            
+            // Update required fields
+            const deliveryFields = document.querySelectorAll('#deliveryAddress input');
+            deliveryFields.forEach(field => {
+                field.required = isDelivery;
+            });
+            
+            updateFinalTotal();
+        }
+        
+        // Update final total
+        function updateFinalTotal() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const isDelivery = document.getElementById('delivery').checked;
+            const shippingCost = isDelivery ? 19.95 : 0;
+            const total = subtotal + shippingCost;
+            
+            // Check for free shipping
+            const finalShipping = subtotal >= 150 ? 0 : shippingCost;
+            const finalTotal = subtotal + finalShipping;
+            
+            document.getElementById('finalTotal').textContent = finalTotal.toFixed(2).replace('.', ',');
+            
+            if (subtotal >= 150 && isDelivery) {
+                document.querySelector('[for="delivery"]').innerHTML = 'Bezorging aan huis (GRATIS - bestelling > €150)';
+            } else if (isDelivery) {
+                document.querySelector('[for="delivery"]').innerHTML = 'Bezorging aan huis (+ €19,95)';
+            }
+        }
+        
+        // Submit order
+        document.getElementById('orderForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const orderData = Object.fromEntries(formData);
+            
+            // Calculate totals
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const isDelivery = orderData.shipping === 'delivery';
+            const shippingCost = isDelivery && subtotal < 150 ? 19.95 : 0;
+            const total = subtotal + shippingCost;
+            
+            // Generate order number
+            const orderNumber = 'BT' + Date.now();
+            
+            // Prepare email data
+            const emailData = {
+                order_number: orderNumber,
+                customer_name: orderData.name,
+                customer_email: orderData.email,
+                customer_phone: orderData.phone,
+                shipping_method: isDelivery ? 'Bezorging' : 'Ophalen in Lebbeke',
+                delivery_address: isDelivery ? `${orderData.address}, ${orderData.postcode} ${orderData.city}` : 'Hannaerden 1A, 9280 Lebbeke',
+                order_items: cart.map(item => `${item.name} - Aantal: ${item.quantity} - €${(item.price * item.quantity).toFixed(2)}`).join('\n'),
+                subtotal: subtotal.toFixed(2),
+                shipping_cost: shippingCost.toFixed(2),
+                total_amount: total.toFixed(2),
+                comments: orderData.comments || 'Geen opmerkingen',
+                payment_info: `IBAN: NL12 ABCD 0123 4567 89\nBIC: ABCDNL2A\nTe betalen: €${total.toFixed(2)}\nReferentie: ${orderNumber}`
+            };
+            
+            // Send emails via EmailJS
+            try {
+                // Send to customer
+                await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+                    ...emailData,
+                    to_email: orderData.email,
+                    to_name: orderData.name
+                });
+                
+                // Send to shop owner
+                await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID_ADMIN', {
+                    ...emailData,
+                    to_email: 'info@biertafel-kopen.nl', // Vervang met je eigen email
+                    to_name: 'Biertafel-kopen.nl'
+                });
+                
+                // Clear cart
+                cart = [];
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCount();
+                
+                // Show success message
+                document.getElementById('orderSuccess').style.display = 'block';
+                document.getElementById('checkoutForm').style.display = 'none';
+                document.getElementById('cartItems').innerHTML = '';
+                document.getElementById('cartTotal').style.display = 'none';
+                
+                // Auto close after 5 seconds
+                setTimeout(() => {
+                    closeCart();
+                    document.getElementById('orderSuccess').style.display = 'none';
+                }, 5000);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Er is een fout opgetreden bij het verzenden van uw bestelling. Probeer het opnieuw of neem contact met ons op.');
+            }
+        });
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('cartModal');
+            if (event.target === modal) {
+                closeCart();
+            }
+        }
+        
+        // Initialize
+        displayProducts();
+        updateCartCount();
+    </script>
 </body>
 </html>
