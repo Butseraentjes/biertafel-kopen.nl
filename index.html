@@ -274,6 +274,10 @@
             transform: translateY(-5px);
             box-shadow: 0 5px 25px rgba(0,0,0,0.15);
         }
+
+        .product-card.out-of-stock {
+            opacity: 0.92;
+        }
         
         .product-image-wrapper {
             position: relative;
@@ -305,6 +309,10 @@
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 600;
+        }
+
+        .product-badge.out-of-stock {
+            background: var(--danger);
         }
         
         .product-info {
@@ -369,6 +377,18 @@
         
         .btn-add-cart:hover {
             background-color: var(--secondary-green);
+        }
+
+        .btn-add-cart.disabled,
+        .btn-add-cart:disabled {
+            background-color: #adb5bd;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-add-cart.disabled:hover,
+        .btn-add-cart:disabled:hover {
+            background-color: #adb5bd;
         }
         
         /* Info Sections */
@@ -1020,7 +1040,7 @@
     <script>
         // Initialize EmailJS
         (function() {
-            emailjs.init("Tx4r1Fw27_MCyKDR3"); // Jouw EmailJS public key
+            emailjs.init("Tx4r1Fw27_MCyKDR3");
         })();
         
         // Products data
@@ -1032,7 +1052,8 @@
                 description: "Onze grootste biertafel, perfect als buffet- of eettafel. Dubbel gelakt vurenhout (28mm dik) met stevige stalen constructie.",
                 price: 149.95,
                 image: "https://www.e-woodproducts.com/cdn/shop/files/biertafel-in-veranda-met-dame.png?v=1766221099",
-                popular: true
+                popular: true,
+                inStock: true
             },
             {
                 id: 2,
@@ -1040,7 +1061,8 @@
                 specs: "Afmetingen: 220 x 70 x 77 cm (LxBxH)",
                 description: "De klassieke biertafel voor elk feest. Biedt comfortabel plaats aan 8-10 personen. Opklapbaar voor eenvoudige opslag.",
                 price: 129.95,
-                image: "https://www.e-woodproducts.com/cdn/shop/files/biertafel-220cm-luxe-terras_a6fc4129-ec31-4284-8bac-4d1257348384.png?v=1766505181"
+                image: "https://www.e-woodproducts.com/cdn/shop/files/biertafel-220cm-luxe-terras_a6fc4129-ec31-4284-8bac-4d1257348384.png?v=1766505181",
+                inStock: true
             },
             {
                 id: 3,
@@ -1048,7 +1070,8 @@
                 specs: "Afmetingen: 220 x 60 x 77 cm (LxBxH)",
                 description: "Slanke biertafel, ideaal voor kleinere ruimtes. Perfect voor langs de muur of als extra buffettafel.",
                 price: 119.95,
-                image: "https://www.e-woodproducts.com/cdn/shop/files/binnen-5-serre.png?v=1766505052"
+                image: "https://www.e-woodproducts.com/cdn/shop/files/binnen-5-serre.png?v=1766505052",
+                inStock: true
             },
             {
                 id: 4,
@@ -1056,15 +1079,17 @@
                 specs: "Afmetingen: 160 x 70 x 77 cm (LxBxH)",
                 description: "Compacte biertafel voor 6-8 personen. Ideaal voor kleinere tuinen en terrassen. Volledig opklapbaar.",
                 price: 109.95,
-                image: "https://www.e-woodproducts.com/cdn/shop/files/biertafel-modern-terras.png?v=1766504533"
+                image: "https://www.e-woodproducts.com/cdn/shop/files/biertafel-modern-terras.png?v=1766504533",
+                inStock: true
             },
             {
                 id: 5,
                 name: "KING® Biertafel 110 cm",
                 specs: "Afmetingen: 110 x 50 x 77 cm (LxBxH)",
-                description: "Onze kleinste biertafel, perfect voor 4 personen. Ideaal voor balkons en kleine ruimtes. Budgetvriendelijk.",
+                description: "Onze kleinste biertafel, perfect voor 4 personen. Ideaal voor balkons en kleine ruimtes. Budgetvriendelijk. Momenteel niet op voorraad en niet te koop.",
                 price: 94.95,
-                image: "https://www.e-woodproducts.com/cdn/shop/files/biertafelset-110cm-op-betonnen-patio.png?v=1766216895&width=800"
+                image: "https://www.e-woodproducts.com/cdn/shop/files/biertafelset-110cm-op-betonnen-patio.png?v=1766216895&width=800",
+                inStock: false
             },
             {
                 id: 6,
@@ -1073,7 +1098,8 @@
                 description: "Complete set met onze grootste tafel en 2 bijpassende banken. Voor 8-10 personen. Alles opklapbaar.",
                 price: 269.95,
                 image: "https://www.e-woodproducts.com/cdn/shop/files/lente-tuin.png?v=1766220459",
-                popular: true
+                popular: true,
+                inStock: true
             },
             {
                 id: 7,
@@ -1082,7 +1108,8 @@
                 description: "Onze bestverkochte complete set. Perfect voor tuinfeesten en evenementen. Plaats voor 8-10 personen.",
                 price: 239.95,
                 image: "https://www.e-woodproducts.com/cdn/shop/files/pure-product-1.png?v=1766215310",
-                popular: true
+                popular: true,
+                inStock: true
             },
             {
                 id: 8,
@@ -1090,7 +1117,8 @@
                 specs: "Set: 1 tafel (220x60x77cm) + 2 banken (220x25x47cm)",
                 description: "Slanke complete set voor langwerpige ruimtes. Ideaal voor 8 personen. Ruimtebesparend design.",
                 price: 229.95,
-                image: "https://www.e-woodproducts.com/cdn/shop/files/biertafelset-op-betonnen-terras.png?v=1766214680"
+                image: "https://www.e-woodproducts.com/cdn/shop/files/biertafelset-op-betonnen-terras.png?v=1766214680",
+                inStock: true
             },
             {
                 id: 9,
@@ -1098,23 +1126,26 @@
                 specs: "Set: 1 tafel (160x70x77cm) + 2 banken (160x25x47cm)",
                 description: "Compacte complete set voor 6-8 personen. Perfect voor kleinere tuinen. Volledig opklapbaar.",
                 price: 199.95,
-                image: "https://www.e-woodproducts.com/cdn/shop/files/biertafelset-luxe-terras.png?v=1766503883"
+                image: "https://www.e-woodproducts.com/cdn/shop/files/biertafelset-luxe-terras.png?v=1766503883",
+                inStock: true
             },
             {
                 id: 10,
                 name: "KING® Biertafelset 110 cm",
                 specs: "Set: 1 tafel (110x50x77cm) + 2 banken (110x25x47cm)",
-                description: "Gezellige set voor 4 personen. Ideaal voor kleine ruimtes en intieme bijeenkomsten.",
+                description: "Gezellige set voor 4 personen. Ideaal voor kleine ruimtes en intieme bijeenkomsten. Momenteel niet op voorraad en niet te koop.",
                 price: 159.95,
-                image: "https://www.e-woodproducts.com/cdn/shop/files/biertafelset-110cm-op-betonnen-patio.png?v=1766216895&width=800"
+                image: "https://www.e-woodproducts.com/cdn/shop/files/biertafelset-110cm-op-betonnen-patio.png?v=1766216895&width=800",
+                inStock: false
             },
             {
                 id: 11,
                 name: "KING® Biertafelset 110 x 60 cm met rugleuningen",
                 specs: "Set: 1 tafel (110x60x77cm) + 2 banken met rugleuning",
-                description: "Comfortabele set met rugleuningen voor extra zitcomfort. Perfect voor langere bijeenkomsten.",
+                description: "Comfortabele set met rugleuningen voor extra zitcomfort. Perfect voor langere bijeenkomsten. Momenteel niet op voorraad en niet te koop.",
                 price: 189.95,
-                image: "https://www.e-woodproducts.com/cdn/shop/files/bokeh-tuin.png?v=1766506583"
+                image: "https://www.e-woodproducts.com/cdn/shop/files/bokeh-tuin.png?v=1766506583",
+                inStock: false
             },
             {
                 id: 12,
@@ -1122,22 +1153,34 @@
                 specs: "Afmetingen: verstelbaar voor alle maten",
                 description: "Professionele transportkar voor het vervoeren van biertafels. Capaciteit: 10 complete sets. Met 4 wielen waarvan 2 met rem.",
                 price: 349.95,
-                image: "https://www.e-woodproducts.com/cdn/shop/files/transport-1000-1_37356c75-a792-47ac-90ff-ae9012775aaa.jpg?v=1706789230"
+                image: "https://www.e-woodproducts.com/cdn/shop/files/transport-1000-1_37356c75-a792-47ac-90ff-ae9012775aaa.jpg?v=1706789230",
+                inStock: true
             }
         ];
         
         // Shopping cart
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Verwijder niet-beschikbare producten uit oude cart
+        cart = cart.filter(item => {
+            const liveProduct = products.find(p => p.id === item.id);
+            return liveProduct && liveProduct.inStock !== false;
+        });
+        localStorage.setItem('cart', JSON.stringify(cart));
         
         // Display products
         function displayProducts() {
             const productsContainer = document.getElementById('products');
             productsContainer.innerHTML = products.map(product => `
-                <div class="product-card">
+                <div class="product-card ${product.inStock === false ? 'out-of-stock' : ''}">
                     <div class="product-image-wrapper">
                         <img src="${product.image}" alt="${product.name}" class="product-image" 
                              onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgZmlsbD0iI2RkZCIvPjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjE1MCIgeT0iMTI1IiBzdHlsZT0iZmlsbDojOTk5O2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjE3cHg7Zm9udC1mYW1pbHk6QXJpYWwsc2Fucy1zZXJpZjtkb21pbmFudC1iYXNlbGluZTpjZW50cmFsIj5Ob28gSW1hZ2U8L3RleHQ+PC9zdmc+'">
-                        ${product.popular ? '<span class="product-badge">Populair</span>' : ''}
+                        ${
+                            product.inStock === false
+                                ? '<span class="product-badge out-of-stock">Niet op voorraad</span>'
+                                : (product.popular ? '<span class="product-badge">Populair</span>' : '')
+                        }
                     </div>
                     <div class="product-info">
                         <h3 class="product-title">${product.name}</h3>
@@ -1145,10 +1188,16 @@
                         <p class="product-description">${product.description}</p>
                         <div class="product-footer">
                             <span class="product-price">€${product.price.toFixed(2).replace('.', ',')}</span>
-                            <button class="btn-add-cart" onclick="addToCart(${product.id})">
-                                <span>In winkelwagen</span>
-                                <span>🛒</span>
-                            </button>
+                            ${
+                                product.inStock === false
+                                    ? `<button class="btn-add-cart disabled" disabled>
+                                            <span>Niet op voorraad</span>
+                                       </button>`
+                                    : `<button class="btn-add-cart" onclick="addToCart(${product.id}, event)">
+                                            <span>In winkelwagen</span>
+                                            <span>🛒</span>
+                                       </button>`
+                            }
                         </div>
                     </div>
                 </div>
@@ -1156,8 +1205,14 @@
         }
         
         // Add to cart with animation
-        function addToCart(productId) {
+        function addToCart(productId, event) {
             const product = products.find(p => p.id === productId);
+
+            if (!product || product.inStock === false) {
+                alert('Dit product is momenteel niet op voorraad en niet te koop.');
+                return;
+            }
+
             const existingItem = cart.find(item => item.id === productId);
             
             if (existingItem) {
@@ -1169,8 +1224,7 @@
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
             
-            // Visual feedback
-            const button = event.target.closest('.btn-add-cart');
+            const button = event.currentTarget;
             button.innerHTML = '<span>✓ Toegevoegd</span>';
             button.style.backgroundColor = 'var(--success)';
             
@@ -1445,73 +1499,54 @@
             const formData = new FormData(form);
             const orderData = Object.fromEntries(formData);
             
-            // Prepare order details
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const shipping = 19.95;
             const total = subtotal + shipping;
             const orderNumber = 'BT' + Date.now();
             
-            // Prepare email data
             const emailData = {
-                // Customer details
                 customer_name: orderData.firstname + ' ' + orderData.lastname,
                 customer_email: orderData.email,
                 customer_phone: orderData.phone,
-                
-                // Order details
                 order_number: orderNumber,
                 order_date: new Date().toLocaleDateString('nl-NL', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
                 }),
-                
-                // Products
                 order_items: cart.map(item => 
                     `${item.name}\nAfmetingen: ${item.specs}\nAantal: ${item.quantity} x €${item.price.toFixed(2).replace('.', ',')} = €${(item.price * item.quantity).toFixed(2).replace('.', ',')}`
                 ).join('\n\n'),
-                
-                // Amounts
                 subtotal: subtotal.toFixed(2).replace('.', ','),
                 shipping_cost: shipping.toFixed(2).replace('.', ','),
                 total_amount: total.toFixed(2).replace('.', ','),
-                
-                // Delivery
                 shipping_method: orderData.shipping === 'pickup' ? 'Ophalen in Lebbeke' : 'Bezorging aan huis',
                 delivery_address: orderData.shipping === 'pickup' ? 
                     'Hannaerden 1a\n9280 Lebbeke\n(Alleen op afspraak)' : 
                     `${orderData.address}\n${orderData.postcode} ${orderData.city}`,
-                
-                // Optional fields
                 comments: orderData.comments || 'Geen opmerkingen',
                 company_name: orderData.company || '',
                 vat_number: orderData.vat || ''
             };
             
-            // Show loading
             const button = form.querySelector('button[type="submit"]');
             button.disabled = true;
             button.textContent = 'Bestelling wordt verwerkt...';
             
             try {
-                // Send emails via EmailJS
-                const SERVICE_ID = 'service_abc123'; // Je EmailJS service ID (moet je nog invullen)
+                const SERVICE_ID = 'service_abc123';
                 
-                // Send to customer
                 await emailjs.send(SERVICE_ID, 'template_gfg22cs', emailData);
                 
-                // Send to shop owner - je moet nog een admin template maken
                 await emailjs.send(SERVICE_ID, 'template_ngwxei7', {
                     ...emailData,
-                    to_email: 'support@e-woodproducts.com' // Vervang met je eigen email
+                    to_email: 'support@e-woodproducts.com'
                 });
                 
-                // Clear cart
                 cart = [];
                 localStorage.setItem('cart', JSON.stringify(cart));
                 updateCartCount();
                 
-                // Show success
                 document.getElementById('orderSuccess').style.display = 'block';
                 document.getElementById('cartContent').innerHTML = `
                     <div style="text-align: center; padding: 40px;">
@@ -1588,7 +1623,6 @@
   <p>U kunt dit opsturen naar ons adres: <strong>BV E-Products Europe, Hannaerden 1A, 9280 Lebbeke</strong>.</p>
   <p>Gelieve het product te verpakken in karton. Nadat wij het product terug hebben ontvangen, storten wij uw geld binnen een periode van 5 werkdagen terug. Bezorg ons via e-mail (<a href="mailto:support@e-woodproducts.com">support@e-woodproducts.com</a>) uw IBAN-nummer.</p>
  
-
   <h3>8. Factuurvoorwaarden</h3>
   <p>Facturen zijn betaalbaar op de vermelde vervaldag op bankrekening van E-Products Europe BV, zoals opgegeven op de factuur. Indien de factuur op de vervaldag niet is betaald, dan is van rechtswege en zonder enige ingebrekestelling een conventionele en moratoire intrest verschuldigd aan de intrestvoet bepaald in artikel 5 van de Wet van 02/08/2002 ter Bestrijding van de Betalingsachterstand.</p>
   <p>Elke laattijdige betaling door de klant geeft E-Products Europe BV tevens het recht om een forfaitaire schadevergoeding aan te rekenen, van 15% van de factuurbedragen, met een minimum van 40 EUR en een maximum van 2.500 EUR, dit ter dekking van de administratieve kosten van E-Products Europe BV.</p>
@@ -1646,10 +1680,8 @@
   Magazijn / ophaling: Hannaerden 1A, 9280 Lebbeke (op afspraak)<br>
   E-mail: <a href="mailto:support@e-woodproducts.com">support@e-woodproducts.com</a></p>
 </div>
-
             `;
             
-            // Create modal
             const modal = document.createElement('div');
             modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 3000; display: flex; align-items: center; justify-content: center; padding: 20px;';
             modal.innerHTML = `
